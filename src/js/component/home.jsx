@@ -65,9 +65,13 @@ const Home = () => {
 											<i className="fas fa-times float-right"></i>
 										</button>
 									</li>
+									<ul></ul>
 								</>
 							);
 						})}
+						<p className="list-group-item list-group-item-info">
+							Cantidad de tareas: {lista.length}
+						</p>
 					</ul>
 				</div>
 			</div>
