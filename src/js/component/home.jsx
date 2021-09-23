@@ -1,5 +1,7 @@
 import { bottom } from "@popperjs/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+const UrlBase =
+	"https://assets.breatheco.de/apis/fake/todos/user/FiorellaCrocco";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -12,7 +14,23 @@ const Home = () => {
 		guardarLista(prevState =>
 			prevState.filter((todo, index) => index !== indexItem)
 		);
+		{
+			let resp = fetch(UrlBase, {
+				method: "PUT",
+				body: JSON.stringify(lista),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			});
+		}
 	};
+
+	useEffect(() => {
+		fetch(UrlBase)
+			.then(response => response.json())
+			.then(data => guardarLista(data))
+			.catch(err => console.log("Problem"));
+	}, []);
 
 	return (
 		<>
@@ -30,23 +48,31 @@ const Home = () => {
 								guardarTarea(e.target.value);
 							}}
 							type="text"
-							onKeyDown={e => {
+							onKeyDown={async e => {
 								if (e.keyCode == "13") {
-									let MostrarLista = [];
-									for (let i = 0; i < lista.length; i++) {
+									let MostrarLista = lista.slice();
+									/* for (let i = 0; i < lista.length; i++) {
 										MostrarLista.push(lista[i]);
+									} */
+									MostrarLista.push({
+										label: tarea,
+										done: false
+									});
+
+									let respuesta = await fetch(UrlBase, {
+										method: "PUT",
+										body: JSON.stringify(MostrarLista),
+										headers: {
+											"Content-Type": "application/json"
+										}
+									});
+
+									if (respuesta.ok) {
+										guardarLista(MostrarLista);
 									}
-									MostrarLista.push(tarea);
-									guardarLista(MostrarLista);
 									guardarTarea((e.target.value = ""));
 								}
-							}}>
-							{/* onChange=
-							{e => {
-								guardarTarea(e.target.value);
-							}}
-							type="text" */}
-						</textarea>
+							}}></textarea>
 					</div>
 					<ul className="list-group">
 						{lista.map((cosas, index) => {
@@ -55,7 +81,7 @@ const Home = () => {
 									<li
 										key={index}
 										className="list-group-item list-group-item-info">
-										{cosas}
+										{cosas.label}
 
 										<button
 											className="btn btn"
