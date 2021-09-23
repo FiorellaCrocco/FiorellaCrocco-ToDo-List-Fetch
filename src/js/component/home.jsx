@@ -98,6 +98,38 @@ const Home = () => {
 						<p className="list-group-item list-group-item-info">
 							Cantidad de tareas: {lista.length}
 						</p>
+
+						<button
+							className="btn btn"
+							onClick={e => {
+								{
+									let delet = fetch(UrlBase, {
+										method: "DELETE",
+										body: JSON.stringify([]),
+										headers: {
+											"Content-Type": "application/json"
+										}
+									});
+								}
+							}}>
+							Eliminar
+						</button>
+
+						<button
+							className="btn btn"
+							onClick={e => {
+								{
+									let nuev = fetch(UrlBase, {
+										method: "POST",
+										body: JSON.stringify([]),
+										headers: {
+											"Content-Type": "application/json"
+										}
+									});
+								}
+							}}>
+							Crear usuario
+						</button>
 					</ul>
 				</div>
 			</div>
