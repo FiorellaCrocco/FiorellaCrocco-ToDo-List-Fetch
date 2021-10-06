@@ -32,6 +32,19 @@ const Home = () => {
 			.catch(err => console.log("Problem"));
 	}, []);
 
+	useEffect(() => {
+        fetch(UrlBase, {
+            method: "PUT", // or 'PUT'
+            body: JSON.stringify(lista), // data can be `string` or {object}!
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log("Problem"));
+    }, [lista]);
+
 	return (
 		<>
 			<div className="container text-center mt-5">
